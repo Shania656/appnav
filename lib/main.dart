@@ -10,12 +10,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Animation Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Animation Demo'),
     );
   }
 }
@@ -30,19 +30,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0; 
-
-  final List<Widget> _pages = [
-    const Center(child: Text('This is Test 1', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('This is Test 2', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('This is Test 3', style: TextStyle(fontSize: 24))),
-  ];
-
-  void _onNavBarTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+  double _buttonWidth = 100.0;
+  double _opacity = 1.0;
 
   @override
   Widget build(BuildContext context) {
@@ -51,24 +40,66 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onNavBarTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.looks_one),
-            label: 'Test 1',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.looks_two),
-            label: 'Test 2',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.looks_3),
-            label: 'Test 3',
-          ),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _buttonWidth = _buttonWidth == 100.0 ? 200.0 : 100.0;
+                });
+              },
+              child: AnimatedContainer(
+                duration: const Duration(seconds: 1),
+                width: _buttonWidth,
+                height: 50,
+                color: Colors.amber,
+                alignment: Alignment.center,
+                child: const Text('Tap to Grow Width',
+                    style: TextStyle(color: Colors.white)),
+              ),
+            ),
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _opacity = _opacity == 1.0 ? 0.5 : 1.0;
+                });
+              },
+              child: AnimatedOpacity(
+                duration: const Duration(seconds: 1),
+                opacity: _opacity,
+                child: Container(
+                  width: 100,
+                  height: 50,
+                  color: Colors.blue,
+                  alignment: Alignment.center,
+                  child: const Text('Tap to Fade',
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _buttonWidth = _buttonWidth == 100.0 ? 150.0 : 100.0;
+                  _opacity = _opacity == 1.0 ? 0.7 : 1.0;
+                });
+              },
+              child: AnimatedContainer(
+                duration: const Duration(seconds: 1),
+                width: _buttonWidth,
+                height: 50,
+                color: Colors.green,
+                alignment: Alignment.center,
+                child: const Text('Tap to Grow & Fade',
+                    style: TextStyle(color: Colors.white)),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
